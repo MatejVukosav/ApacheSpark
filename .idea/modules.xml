@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ApacheSpark.iml" filepath="$PROJECT_DIR$/ApacheSpark.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ApacheSparkDz/ApacheSparkDz.iml" filepath="$PROJECT_DIR$/ApacheSparkDz/ApacheSparkDz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ApacheSparkLab/ApacheSparkLab.iml" filepath="$PROJECT_DIR$/ApacheSparkLab/ApacheSparkLab.iml" />
+    </modules>
+  </component>
+</project>
