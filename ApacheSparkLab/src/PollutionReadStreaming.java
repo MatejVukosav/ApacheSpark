@@ -10,6 +10,7 @@ import scala.Tuple2;
 import java.util.NoSuchElementException;
 
 /**
+ * Prvo pokrenuti SensorStreamGenerator pa se zatim zakacit na njega.
  * Created by Vuki on 6.6.2017..
  */
 public class PollutionReadStreaming {

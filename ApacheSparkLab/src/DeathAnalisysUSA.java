@@ -7,6 +7,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.storage.StorageLevel;
 import scala.Tuple2;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -33,20 +34,20 @@ import java.util.NoSuchElementException;
  * 11  25821
  * 12  27531
  * 5. Kakvo je kretanje postotka umrlih ozenjenih muskaraca u dobi izmedu 45 i 65 godina po mjesecima?
- * Male deaths between 46 and 65 age per month percentage:
+ * Male deaths between 45 and 65 age per month percentage:
  * Month : Percentage
- * 1  9.528927043006295
- * 2  8.135033260837677
- * 3  8.57542843658118
- * 4  8.136946635967627
- * 5  8.18892666033127
- * 6  7.9688885203870115
- * 7  8.199769119400987
- * 8  8.094852383108725
- * 9  7.839735699115383
- * 10  8.317760585747907
- * 11  8.234209871740088
- * 12  8.779521783775854
+ * 1  42.88678424416854
+ * 2  43.669149353194825
+ * 3  43.802759287493956
+ * 4  44.14485029001411
+ * 5  43.91915573036333
+ * 6  43.81527872263796
+ * 7  43.386613775133206
+ * 8  43.681058934762056
+ * 9  43.46729580214774
+ * 10  43.737300157190504
+ * 11  44.08427249138298
+ * 12  42.92615596963423
  * 6.Koji je ukupni broj umrlih u nesreci (kod 1) u cjelokupnom periodu?
  * 132684 peoples died from accident
  * 7. Koliki je broj razlicitih godina starosti umrlih osoba koji se pojavljuju u zapisima?
@@ -152,24 +153,25 @@ public class DeathAnalisysUSA {
         //key is month, value is num of male deaths
         JavaPairRDD<Integer, Integer> deathPerMonth = records.filter(usDeathRecord -> usDeathRecord.Sex == 'M')
                 .filter(usDeathRecord -> usDeathRecord.Age > 45 && usDeathRecord.Age < 65)
+                .filter(usDeathRecord -> usDeathRecord.MaritalStatus == 'M')
                 .mapToPair(usDeathRecord -> new Tuple2<>(usDeathRecord.MonthOfDeath, 1))
                 .reduceByKey((integer, integer2) -> integer + integer2)
                 .sortByKey();
-
-        Integer allDeathsCount = records.filter(usDeathRecord -> usDeathRecord.Sex == 'M')
+        //mjesec, vrijednost
+        List<Tuple2<Integer, Integer>> collect = records.filter(usDeathRecord -> usDeathRecord.Sex == 'M')
                 .filter(usDeathRecord -> usDeathRecord.Age > 45 && usDeathRecord.Age < 65)
                 .mapToPair(usDeathRecord -> new Tuple2<>(usDeathRecord.MonthOfDeath, 1))
                 .reduceByKey((integer, integer2) -> integer + integer2)
-                .mapToPair(day -> new Tuple2<>(0, day._2))
-                .reduceByKey((integer, integer2) -> integer + integer2)
-                .first()
-                ._2;
+                // .mapToPair(day -> new Tuple2<>(0, day._2))
+                // .reduceByKey((integer, integer2) -> integer + integer2)
+                .sortByKey()
+                .collect();
 
 
         System.out.println("Male deaths between 46 and 65 age per month percentage:");
         System.out.println("Month : Percentage");
-        deathPerMonth.foreach(day -> {
-            System.out.println(day._1 + "  " + ((double) day._2 / allDeathsCount) * 100);
+        deathPerMonth.foreach(month -> {
+            System.out.println(month._1 + "  " + ((double) month._2 / collect.get(month._1 - 1)._2) * 100);
         });
     }
 
