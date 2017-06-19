@@ -46,9 +46,6 @@ public class SensorScope {
                     .filter(SensorscopeReading::isParseable)
                     .map(SensorscopeReading::new)
                     .sorted(Comparator.comparingInt(o -> o.timeSinceTheEpoch));
-//                    .forEach(o -> {
-//                        System.out.println(o.energySource);
-//                    });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,14 +69,6 @@ public class SensorScope {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-//            try {
-//                streams.add(Files.lines(Paths.get(path)));
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
 
     }
 

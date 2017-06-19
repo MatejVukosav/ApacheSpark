@@ -26,11 +26,7 @@ public class ChildNames {
 
         System.setProperty("hadoop.home.dir", "C:\\Program Files\\WinUtils");
 
-        //ChildNames childNames = new ChildNames();
-
-        //JavaSparkContext context = childNames.getContext();
         JavaSparkContext context = getContext();
-        //childNames.parseInput(context, args);
         parseInput(context, args);
     }
 
